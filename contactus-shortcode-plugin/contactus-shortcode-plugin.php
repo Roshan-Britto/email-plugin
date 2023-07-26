@@ -1,7 +1,6 @@
 <?php
-
 /*
- * Plugin Name:       Contact Us Shortcode PLugin
+ * Plugin Name:       Contact Us Shortcode 
  * Plugin URI:        https://example.com/plugins/the-basics/
  * Description:       Handle the Contact Us form with this plugin.
  * Version:           1.10.3
@@ -16,19 +15,20 @@
  * Domain Path:       /languages
  */
 
-
-
-function contactUsForm(){
-
-    return " <form>
+ defined( 'ABSPATH' ) || exit ;
+ 
+function cspContactUsForm( ) 
+{
+    ?>
+        <form>
              <label>Name : <input type='text' placeholder='Enter your Name' required></label><br>
              <label>Email ID : <input type='email' placeholder='Enter your Email' required></label><br> 
              <label>Comment box: </label><br><textarea rows='5' cols='20' placeholder='Leave here your comments' required></textarea><br><br>    
              <input type='submit' value='Submit'>
-            </form>";
-
+        </form>
+    <?php
 }
 
 
-add_shortcode('contact_us','contactUsForm');
+add_shortcode( 'contact_us' , 'cspContactUsForm' ) ;
 

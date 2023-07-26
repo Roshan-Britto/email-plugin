@@ -1,7 +1,6 @@
 <?php
-
 /*
- * Plugin Name:       Shortcode Plugin
+ * Plugin Name:       New Shortcode 
  * Plugin URI:        https://example.com/plugins/the-basics/
  * Description:       Handle the Shortcode with this plugin.
  * Version:           1.10.3
@@ -16,10 +15,12 @@
  * Domain Path:       /languages
  */
 
+ defined( 'ABSPATH' ) || exit ;
 
- function shortcodeFunction(){
-    return '<h2>New Shortcode has been created</h1>';
+ function nscShortcodeFunction()
+ {
+   return '<h2>New Shortcode has been created</h1>' ;
  }
 
- add_shortcode('follow','shortcodeFunction');
+ add_shortcode( 'follow' , 'nscShortcodeFunction') ;
 

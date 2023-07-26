@@ -3,11 +3,19 @@
 namespace MVCP\App\Controllers;
 
 class Helloworld{
-    function addHelloWorldMenu(){
-        add_menu_page('Hello_World_Menu_Page','Hello World','manage_options','hello_world_menu',array($this,'showMessage'));
+    public static function mvcpAddHelloWorldMenu()
+    {
+        add_menu_page(
+            'Hello_World_Menu_Page' ,                       // Page Title
+            'Hello World' ,                                 // Menu Title
+            'manage_options' ,                              // Capability
+            'hello_world_menu' ,                            // Menu Slug
+            array( __CLASS__ , 'mvcpShowMessage')           // Callback function
+        ); 
     }
     
-    function showMessage(){
-        echo "<h1>Hello World</h1><br><h3>Menu By MVC pattern plugin</h3>";
+    public static function mvcpShowMessage( )
+    {
+        echo "<h1>Hello World</h1><br><h3>Menu By MVC pattern plugin</h3>" ;
     }
 }

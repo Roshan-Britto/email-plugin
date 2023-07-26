@@ -1,7 +1,6 @@
 <?php
-
 /*
- * Plugin Name:       MVC Pattern Plugin
+ * Plugin Name:       MVC Pattern 
  * Plugin URI:        https://example.com/plugins/the-basics/
  * Description:       Handle the MVC with this plugin.
  * Version:           1.10.3
@@ -16,20 +15,25 @@
  * Domain Path:       /languages
  */
 
- defined('ABSPATH') || exit;
+use MVCP\App\Route ;
 
- defined('MVCP_PLUGIN_FILE') or define('MVCP_PLUGIN_FILE',__FILE__);
- defined('MVCP_PLUGIN_PATH') or define('MVCP_PLUGIN_PATH',plugin_dir_path(__FILE__));
+ defined('ABSPATH') || exit ;
+
+ defined( 'MVCP_PLUGIN_FILE' ) || define( 'MVCP_PLUGIN_FILE' , __FILE__ ) ;
+ defined( 'MVCP_PLUGIN_PATH' ) || define( 'MVCP_PLUGIN_PATH' , plugin_dir_path( __FILE__ ) ) ;
 
  //autoload files
- if(file_exists(MVCP_PLUGIN_PATH .'/vendor/autoload.php')){
-     // die("autoload");
-    require MVCP_PLUGIN_PATH . '/vendor/autoload.php';
- }else{
-     wp_die('Error During Autoload');
+ if ( file_exists( MVCP_PLUGIN_PATH . '/vendor/autoload.php' ) ) 
+ {
+    require MVCP_PLUGIN_PATH . '/vendor/autoload.php' ;
+ } 
+ else 
+ {
+    wp_die( 'Autoload File Not Found ' );
  }
 
-if(class_exists('MVCP\App\Route')){
-    $route = new MVCP\App\Route();
-    $route->startUp();
+
+if( class_exists( 'MVCP\App\Route' ) )
+{
+   Route::startUp() ;   
 }
