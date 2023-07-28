@@ -19,22 +19,22 @@ use SSE\App\Route;
 
  defined('ABSPATH') || exit;
 
- defined('SSE_PLUGIN_FILE') or define('SSE_PLUGIN_FILE',__FILE__);
- defined('SSE_PLUGIN_PATH') or define('SSE_PLUGIN_PATH',plugin_dir_path(__FILE__));
+ defined( 'SSE_PLUGIN_FILE' ) || define( 'SSE_PLUGIN_FILE' , __FILE__ );
+ defined( 'SSE_PLUGIN_PATH' ) || define( 'SSE_PLUGIN_PATH' , plugin_dir_path( __FILE__ ) ) ;
 
  //autoload files
  if ( file_exists ( SSE_PLUGIN_PATH . '/vendor/autoload.php' ) ) 
  {
-    require SSE_PLUGIN_PATH.'/vendor/autoload.php' ;
+   require SSE_PLUGIN_PATH.'/vendor/autoload.php' ;
  }
  else
  {
-    wp_die( 'Failed During Autoload' );
+   wp_die( 'Failed During Autoload' );
  }
 
 
 if ( class_exists ( '\SSE\App\Route' ) ) 
 {
-    $route = new Route() ;
-    $route->getEmailFunction() ;
+   $route = new Route() ;
+   $route->getEmailFunction() ;
 }

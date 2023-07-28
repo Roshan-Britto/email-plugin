@@ -2,19 +2,21 @@
 
 namespace SSE\App\Controllers;
 
-class Email{
+defined('ABSPATH') || exit;
 
-    function sseAddEmailMenu( )
+class Email
+{
+    function addEmailMenu( )
     {
         add_menu_page( 
             'email_Page' ,              //Page Title
             'Email' ,                   //Menu Title
             'manage_options' ,          //Capability
             'email_menu' ,              //Menu Slug
-            [$this,'sseMailPageview']   //Callback Function
+            [$this,'mailViewPage']      //Callback Function
         ) ;
     }
-    function sseMailPageview()
+    function mailViewPage()
     {
         if ( file_exists ( SSE_PLUGIN_PATH .'/App/Views/Form.php' ) ) 
         {
@@ -27,32 +29,81 @@ class Email{
     }
 
     
-    function sseFormNonce()
+    function formNonce()
     {
         if( isset( $_POST ) && !empty( $_POST ) )
         {
             if( check_admin_referer( 'SSE_email_form' ) ) 
             {
-                $mail_toAddress = $_POST['sse_email'];
-                $mail_subject = $_POST['sse_subject'];
-                $mail_content = $_POST['sse_content'];
+                $mail_toAddress = sanitize_email ( $_POST[ 'sse_email' ] ) ;
+                $mail_subject = sanitize_text_field ( $_POST[ 'sse_subject' ] ) ;
+                $mail_content = sanitize_textarea_field ( $_POST[ 'sse_content' ] ) ;
+
+                if( ! filter_var ( $mail_toAddress , FILTER_VALIDATE_EMAIL ) ) 
+                { 
+                    add_action( 'admin_notices' , [ $this , 'invalidMail' ] ) ;
+                    return ;
+                }
+          
+                if ( empty ( $mail_subject ) ) 
+                {
+                   add_action( 'admin_notices' , [ $this , 'emptyMailSubject' ] ) ;
+                   return ;
+                }
+          
+                if ( empty ( $mail_content ) )
+                {
+                   add_action( 'admin_notices' , [ $this , 'emptyMailContent' ] ) ;
+                   return ;
+                }
             }
             else 
             {
                 wp_die( 'Form nonce not found' ) ;
             }
 
-            $this->sseSendMail( $mail_toAddress , $mail_subject , $mail_content ) ;
+
+            $this->sendMail( $mail_toAddress , $mail_subject , $mail_content ) ;
         }
     }
 
+
+    //Email error
+    function invalidMail () 
+    {
+        ?>
+        <div class="notice notice-error is-dismissible">
+            <h3><?php esc_html_e( 'Invalid Email ID' )   ?></h3>
+        </div>
+        <?php
+    }
+
+    //Mail Subject error
+    function emptyMailSubject () 
+    {
+        ?>
+        <div class="notice notice-error is-dismissible">
+            <h3><?php esc_html_e( 'Add Subject To Mail' )   ?></h3>
+        </div>
+        <?php
+    }
+
+    //Empty Mail Content error
+    function emptyMailContent () 
+    {
+        ?>
+        <div class="notice notice-error is-dismissible">
+            <h3><?php esc_html_e( 'Add Content To Mail' )   ?></h3>
+        </div>
+        <?php
+    }
 
     //Success message
     function mailedSuccessfully()
     {
         ?>
         <div class="notice notice-success is-dismissible">
-            <h3>Email Send Successfully</h3>
+            <h3><?php esc_html_e( 'Email Send Successfully' )   ?></h3>
         </div>
         <?php
     }
@@ -62,13 +113,13 @@ class Email{
     {
         ?>
         <div class="notice notice-error is-dismissible">
-            <h3>Failled to Send</h3>
+            <h3><?php esc_html_e( 'Failed to Send' )   ?></h3>
         </div>
         <?php
     }
     
 
-    function sseSendMail( $mail_toAddress , $mail_subject , $mail_content )
+    function sendMail( $mail_toAddress , $mail_subject , $mail_content )
     {
 
         $api_url = 'https://api.sendgrid.com/v3/mail/send';
@@ -117,5 +168,4 @@ class Email{
             add_action( 'admin_notices' , [ $this , 'mailedUnsuccessfully' ] ) ;
         }
     }
-
 }
