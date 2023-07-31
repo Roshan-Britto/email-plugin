@@ -1,3 +1,7 @@
+<?php
+defined('ABSPATH') || exit ;
+?>
+
 <div class="container" style="width: 100%; margin: 5rem; line-height: 10px; display: flex; flex-direction: row;" >
    <form action="" method="POST">
         <div style="display: flex; flex-direction: row; justify-content: space-between; font-size: 30px; text-align: left; padding: 5px;" >
